@@ -1,7 +1,7 @@
 const app = require('./app'); // Importa la configuración de Express
 
-const port = 3000
-;
+// Usa el puerto asignado en la variable de entorno o el 3000 por defecto
+const port = process.env.PORT || 3000;
 
 // Inicia el servidor
 app.listen(port, () => {

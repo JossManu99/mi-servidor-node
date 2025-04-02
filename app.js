@@ -75,7 +75,10 @@ app.use('/api', extrasRoutes);
 
 
 
-
+app.get('/', (req, res) => {
+    res.send('Bienvenido a mi aplicación');
+  });
+  
 
 
 
