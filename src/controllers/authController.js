@@ -173,7 +173,7 @@ exports.update = async (req, res) => {
     console.log("Datos para actualizar el usuario:", userId, updateData);
 
     // Puedes quitar campos que no se deben actualizar, por ejemplo:
-    delete updateData.password; // Si no deseas actualizar la contraseña desde este endpoint
+    delete updateData.password; // No actualizamos la contraseña desde este endpoint
 
     const userUpdated = await User.findByIdAndUpdate(userId, updateData, { new: true });
     if (!userUpdated) {
@@ -197,7 +197,6 @@ exports.update = async (req, res) => {
   }
 };
 
-// Agregamos el endpoint para eliminar usuario sin quitar lo existente
 exports.delete = async (req, res) => {
   try {
     // Se asume que el middleware de autenticación añade `req.user` con el id del usuario en `sub`
@@ -220,6 +219,24 @@ exports.delete = async (req, res) => {
     return res.status(500).send({
       status: "error",
       message: "Ocurrió un error al eliminar el usuario",
+      error: error.message || error,
+    });
+  }
+};
+
+// Nuevo endpoint para obtener todos los usuarios
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password'); // Excluimos la contraseña
+    return res.status(200).send({
+      status: "success",
+      users,
+    });
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    return res.status(500).send({
+      status: "error",
+      message: "Error al obtener los usuarios",
       error: error.message || error,
     });
   }
