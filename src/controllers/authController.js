@@ -244,7 +244,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Obtener un usuario por su ID (únicamente esta función para administración)
+// Obtener un usuario por su ID (únicamente para administración)
 exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id;

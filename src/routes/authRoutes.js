@@ -7,16 +7,17 @@ const check = require("../middlewares/auth");
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 
-// Endpoint para obtener el perfil (usando parámetro o token, según convenga)
+// Endpoint para obtener el perfil (usando parámetro o token)
 router.get("/profile/:id", check.auth, authController.profile);
 
-// Endpoint para actualizar el usuario
+// Endpoint para actualizar el usuario (del usuario autenticado)
 router.put("/update", check.auth, authController.update);
 
-// Endpoint para eliminar el usuario
+// Endpoint para eliminar el usuario (del usuario autenticado)
 router.delete("/delete", check.auth, authController.delete);
 
-// Nuevo endpoint para obtener todos los usuarios
+// Endpoints para administración de usuarios
 router.get("/users", check.auth, authController.getAllUsers);
+router.get("/users/:id", check.auth, authController.getUserById);
 
 module.exports = router;
