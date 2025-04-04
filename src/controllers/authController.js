@@ -172,8 +172,8 @@ exports.update = async (req, res) => {
 
     console.log("Datos para actualizar el usuario:", userId, updateData);
 
-    // Puedes quitar campos que no se deben actualizar, por ejemplo:
-    delete updateData.password; // No actualizamos la contraseña desde este endpoint
+    // Quitar campos que no se deben actualizar, por ejemplo:
+    delete updateData.password; // Si no deseas actualizar la contraseña desde este endpoint
 
     const userUpdated = await User.findByIdAndUpdate(userId, updateData, { new: true });
     if (!userUpdated) {
@@ -224,10 +224,12 @@ exports.delete = async (req, res) => {
   }
 };
 
-// Nuevo endpoint para obtener todos los usuarios
+// Administración de usuarios
+
+// Obtener todos los usuarios
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password'); // Excluimos la contraseña
+    const users = await User.find().select('-password'); // Excluir la contraseña
     return res.status(200).send({
       status: "success",
       users,
@@ -237,6 +239,31 @@ exports.getAllUsers = async (req, res) => {
     return res.status(500).send({
       status: "error",
       message: "Error al obtener los usuarios",
+      error: error.message || error,
+    });
+  }
+};
+
+// Obtener un usuario por su ID (únicamente esta función para administración)
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId).select('-password');
+    if (!user) {
+      return res.status(404).send({
+        status: "error",
+        message: "Usuario no encontrado",
+      });
+    }
+    return res.status(200).send({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+    return res.status(500).send({
+      status: "error",
+      message: "Ocurrió un error al obtener el usuario",
       error: error.message || error,
     });
   }
