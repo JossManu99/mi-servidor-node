@@ -1,4 +1,3 @@
-// authController.js
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const validate = require('../helpers/validate');
@@ -193,6 +192,34 @@ exports.update = async (req, res) => {
     return res.status(500).send({
       status: "error",
       message: "Ocurrió un error al actualizar el usuario",
+      error: error.message || error,
+    });
+  }
+};
+
+// Agregamos el endpoint para eliminar usuario sin quitar lo existente
+exports.delete = async (req, res) => {
+  try {
+    // Se asume que el middleware de autenticación añade `req.user` con el id del usuario en `sub`
+    const userId = req.user.sub;
+    console.log("Eliminando usuario:", userId);
+    const userDeleted = await User.findByIdAndDelete(userId);
+    if (!userDeleted) {
+      return res.status(404).send({
+        status: "error",
+        message: "No se encontró el usuario a eliminar",
+      });
+    }
+    console.log("Usuario eliminado:", userDeleted);
+    return res.status(200).send({
+      status: "success",
+      message: "Usuario eliminado exitosamente",
+    });
+  } catch (error) {
+    console.error("Error en delete:", error);
+    return res.status(500).send({
+      status: "error",
+      message: "Ocurrió un error al eliminar el usuario",
       error: error.message || error,
     });
   }
