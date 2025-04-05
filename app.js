@@ -50,6 +50,7 @@ const propietarioRoutes = require('./src/routes/propietarioRoutes');
 const recargaRoutes = require('./src/routes/recargaRoutes');
 
 const extrasRoutes = require('./src/routes/extrasRoutes');
+const usuariosRoutes = require('./src/routes/usuariosRoutes');
 
 
 
@@ -72,6 +73,8 @@ app.use ('/api',CombustibleRoutes);
 app.use('/api', propietarioRoutes);
 app.use('/api', recargaRoutes);
 app.use('/api', extrasRoutes);
+
+app.use('/api', usuariosRoutes);
 
 
 
