@@ -24,8 +24,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     enum: ['user', 'admin'],
-    default: 'user',  // Si no se envía role, se guardará como 'user'
-    select: false
+    default: 'user',  // Si no se envía role, se guardará como 'user
   },
   photo: {
     type: String,
